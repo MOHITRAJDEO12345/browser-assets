@@ -61,19 +61,3 @@ The legacy kernel does not recognize the modern API calls embedded in the execut
 - **Pirated/Unactivated OS:** 100% compatible. Microsoft does not enforce "Genuine Windows" validation for the WebView2 renderer.
 
 ---
-
-## 🧹 4-Tier Granular Uninstallation Guide
-
-When resolving severe errors, IT support may need to completely wipe the application.
-
-### Current Implementation: IT/Dev Batch Scripts (Option B)
-Currently, during the testing phase, we provide 3 batch scripts located in `scripts\cleaners\` to manually perform these wipes:
-1. **Level 1 (Basic):** Run Windows Uninstaller. Deletes only `C:\Program Files` binaries. Leaves user sessions and the 150MB compilers intact.
-2. **Level 2 (Cache Wipe):** Run `cleanup_level_2_cache.bat`. Wipes `%LOCALAPPDATA%\com.educode.lockdown`. Fixes generic webview glitches (white screen).
-3. **Level 3 (Log Purge):** Run `cleanup_level_3_logs.bat`. Wipes all local diagnostic logs in `C:\ProgramData` and `%LOCALAPPDATA%`.
-4. **Level 4 (The Deep Nuke):** Run `cleanup_level_4_nuke.bat`. Wipes `%APPDATA%\theeducode`. Forces a total 150MB+ redownload on the next install. Use only for `ERR_CORRUPT_ASSET_12` or total factory reset.
-
-### Future Roadmap (Production UX)
-For the final production release, we will implement one of the following automated solutions to replace the batch scripts:
-- **Option A (NSIS Installer Hooks):** Inject custom `.nsh` hooks into the Tauri `bundle.windows.nsis` config. This allows us to add checkboxes to the Windows Uninstaller dialog safely without overwriting the 1000-line default Tauri template.
-- **Option C (In-App Reset):** Build a "Factory Reset" admin menu inside `preflight.html` that triggers Rust IPC commands (`clear_cache`, `clear_logs`, `clear_compilers`) to wipe the directories cleanly from within the UI before uninstalling.
